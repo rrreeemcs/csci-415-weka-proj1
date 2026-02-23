@@ -25,6 +25,30 @@ import csv
 import arff
 
 def convert_to_weka():
+    arff_dict = {
+        'description': 'Algerian forest fire classification data. Taken from two regions of Algeria from 06-2012 to 09-2012.',
+        'relation': 'algerian_forest_fires',
+        'attributes': [
+            ('region', ['Bejaia', 'Sidi-Bel Abbes']),
+            ('date', 'STRING'),
+            ('day', 'INTEGER'),
+            ('month', 'INTEGER'),
+            ('year', 'INTEGER'),
+            ('temp_c', 'REAL'),
+            ('rel_humidity_percent', 'REAL'),
+            ('wind_speed_kmh', 'REAL'),
+            ('rainfall_mm', 'REAL'),
+            ('ffmc', 'REAL'),
+            ('dmc', 'REAL'),
+            ('dc', 'REAL'),
+            ('isi', 'REAL'),
+            ('bui', 'REAL'),
+            ('fwi', 'REAL'),
+            ('classes', ['fire', 'not fire'])
+        ],
+        'data':[]
+    }
+
     # TODO 1: Reading CSV File
     file_path = 'data/algerian_forest_fires_clean.csv'
     with open(file_path) as csvfile:
