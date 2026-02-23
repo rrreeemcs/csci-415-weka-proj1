@@ -30,7 +30,7 @@ tree algorithm. There are **244 instances of data and 14 features/attributes**. 
 ### Cleaning & Preprocessing
 <ol>
     <li>Combining Regions</li>
-    <li>Removing whitespace and fix column formatting</li>
+    <li>Fix Column & Cell Formatting</li>
     <li>Create new column(s) and remove rows with null classes</li>
 </ol>
 
@@ -40,8 +40,23 @@ complete dataset and have their index be the region name(s). The dataset was spl
 Python Pandas package. Each mini set was given a new region column which was set as the index. Makes it easier to look for
 which region I want.
 
-![img.png](imgs/combine-1.png)
-**Figure 3:** Method to concatenate mini sets into one full DataFrame
+![combine-1.png](imgs/combine-1.png)
 
-![img.png](imgs/combine-2.png)
+**Figure 3:** Concatenating mini sets bejaia_df & sidi_bel_abbes_df into one full DataFrame (algerian_ff)
+
+![combine-2.png](imgs/combine-2.png)
 **Figure 4:** First few rows of the Sidi-Bel Abbes region from the newly made dataset
+
+#### Fix Column & Cell Formatting
+The Excel preview of the CSV earlier showcased visible whitespace for some column names (EX: ' Ws') and cell values (EX: 'not fire   ').
+This whitespace was stripped away before all the column names were converted to lowercase; it provides better readability overall.
+
+![format-1.png](imgs/format-1.png)
+**Figure 5:** Code to format columns and cells
+
+The values for the attributes were also strings. Although this is applicable to some, the temperature, rh (relative humidity), ws (wind speed), and rain
+should be float values. These specific column names were also changed to include their unit of measurement. The code below converted these columns 
+to be floats instead of strings. The *temperature* column, for example, is now called **temp_c** to indicate it is the temperature in Celsius.
+
+![format-2.png](imgs/format-2.png)
+**Figure 6:** Changing the column data types and names for temperature, rh, ws, and rain
