@@ -7,6 +7,7 @@
     <li>Describing the Dataset</li>
     <li>Cleaning & Preprocessing</li>
     <li>Converting to ARFF Weka Format</li>
+    <li>Converting to Arff</li>
 </ol>
 
 ### Describing the Dataset
@@ -31,7 +32,7 @@ tree algorithm. There are **244 instances of data and 14 features/attributes**. 
 <ol>
     <li>Combining Regions</li>
     <li>Fix Column & Cell Formatting</li>
-    <li>Create new column(s) and remove rows with null classes</li>
+    <li>New Columns & Removing Rows</li>
 </ol>
 
 #### Combining Regions
@@ -52,6 +53,7 @@ The Excel preview of the CSV earlier showcased visible whitespace for some colum
 This whitespace was stripped away before all the column names were converted to lowercase; it provides better readability overall.
 
 ![format-1.png](imgs/format-1.png)
+
 **Figure 5:** Code to format columns and cells
 
 The values for the attributes were also strings. Although this is applicable to some, the temperature, rh (relative humidity), ws (wind speed), and rain
@@ -59,4 +61,19 @@ should be float values. These specific column names were also changed to include
 to be floats instead of strings. The *temperature* column, for example, is now called **temp_c** to indicate it is the temperature in Celsius.
 
 ![format-2.png](imgs/format-2.png)
+
 **Figure 6:** Changing the column data types and names for temperature, rh, ws, and rain
+
+#### New Columns & Removing Rows
+A column that looked necessary to add was a date column. Each row contained the date split into day, month, and year already so they were
+not removed from the table. No other columns needed to be created for this dataset. Additionally, the date was moved to be the first column of the dataset.
+
+![new-col.png](imgs/new-col.png)
+**Figure 7:** Creating the new date column and moving it to the front
+
+After this, the dataset was checked to verify there were no null values present. There only appeared to be one located in the classes attribute.
+This row was removed since it was only one instance and would not heavily alter the data.
+
+![remove-null.png](imgs/remove-null.png)
+
+**Figure 8:** Removing nulls with subset classes attribute and verifying no more nulls
