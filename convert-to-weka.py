@@ -4,6 +4,21 @@
 '''
 This file handles the conversion of the cleaned CSV file (algerian_forest_fires_clean.csv) to ARFF format.
 The newly converted file will then be used with Weka for Data Mining purposes.
+
+Follow the format below:
+
+TITLE: Algerian Forest Fires
+Sources: (author names)
+Cleaned By: Sameer Ramkissoon
+
+@RELATION algerian_forest_fires
+
+@ATTRIBUTE
+@ATTRIBUTE
+...
+
+@DATA
+...
 '''
 
 def convert_to_weka(name):
