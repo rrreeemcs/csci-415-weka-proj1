@@ -21,10 +21,21 @@ Cleaned By: Sameer Ramkissoon
 ...
 '''
 
-def convert_to_weka(name):
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
+import csv
+import arff
+
+def convert_to_weka():
+    # TODO 1: Reading CSV File
+    file_path = 'data/algerian_forest_fires_clean.csv'
+    with open(file_path) as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            print(row)
+    # TODO 2: Labeling the description, relation name, attributes, and data
+    # TODO 3: Dump it as an ARFF file
+    pass
 
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    convert_to_weka('PyCharm')
+    convert_to_weka()
