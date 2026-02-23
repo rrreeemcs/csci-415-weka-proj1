@@ -24,7 +24,10 @@ Cleaned By: Sameer Ramkissoon
 import csv
 import arff
 
+FILE_PATH = 'data/algerian_forest_fires_clean.csv'
+
 def convert_to_weka():
+    # TODO 1: Creating initial dictionary with description, relation name, attributes, and blank data
     arff_dict = {
         'description': 'Algerian forest fire classification data. Taken from two regions of Algeria from 06-2012 to 09-2012.',
         'relation': 'algerian_forest_fires',
@@ -49,15 +52,12 @@ def convert_to_weka():
         'data':[]
     }
 
-    # TODO 1: Reading CSV File
-    file_path = 'data/algerian_forest_fires_clean.csv'
-    with open(file_path) as csvfile:
+    # TODO 2: Reading CSV File to put into arff_dict['data'] with list comprehension
+    with open(FILE_PATH) as csvfile:
         reader = csv.DictReader(csvfile)
-        for row in reader:
-            print(row)
-    # TODO 2: Labeling the description, relation name, attributes, and data
+        arff_dict['data'] = [row for row in reader]
+
     # TODO 3: Dump it as an ARFF file
-    pass
 
 
 # Press the green button in the gutter to run the script.
