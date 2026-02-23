@@ -26,3 +26,22 @@ tree algorithm. There are **244 instances of data and 14 features/attributes**. 
 
 ![sidi-og.png](imgs/sidi-og.png)
 **Figure 2:** The head of the Sidi-Bel Abbes region data. Note that the dataset contained **BOTH** separated by a blank row
+
+### Cleaning & Preprocessing
+<ol>
+    <li>Combining Regions</li>
+    <li>Removing whitespace and fix column formatting</li>
+    <li>Create new column(s) and remove rows with null classes</li>
+</ol>
+
+#### Combining Regions
+As stated prior, the original dataset contains data from two different regions. It would be nice to combine both into one
+complete dataset and have their index be the region name(s). The dataset was split into two using the **.iloc[]** method from the
+Python Pandas package. Each mini set was given a new region column which was set as the index. Makes it easier to look for
+which region I want.
+
+![img.png](imgs/combine-1.png)
+**Figure 3:** Method to concatenate mini sets into one full DataFrame
+
+![img.png](imgs/combine-2.png)
+**Figure 4:** First few rows of the Sidi-Bel Abbes region from the newly made dataset
