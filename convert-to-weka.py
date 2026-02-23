@@ -23,8 +23,11 @@ Cleaned By: Sameer Ramkissoon
 
 import csv
 import arff
+import pandas as pd
 
 FILE_PATH = 'data/algerian_forest_fires_clean.csv'
+OUTPUT_PATH = 'data/algerian_forest_fires.arff'
+DF = pd.read_csv(FILE_PATH)
 
 def convert_to_weka():
     # TODO 1: Creating initial dictionary with description, relation name, attributes, and blank data
@@ -34,9 +37,9 @@ def convert_to_weka():
         'attributes': [
             ('region', ['Bejaia', 'Sidi-Bel Abbes']),
             ('date', 'STRING'),
-            ('day', 'INTEGER'),
-            ('month', 'INTEGER'),
-            ('year', 'INTEGER'),
+            ('day', 'STRING'),
+            ('month', 'STRING'),
+            ('year', 'STRING'),
             ('temp_c', 'REAL'),
             ('rel_humidity_percent', 'REAL'),
             ('wind_speed_kmh', 'REAL'),
@@ -53,11 +56,13 @@ def convert_to_weka():
     }
 
     # TODO 2: Reading CSV File to put into arff_dict['data'] with list comprehension
-    with open(FILE_PATH) as csvfile:
-        reader = csv.DictReader(csvfile)
-        arff_dict['data'] = [row for row in reader]
+    algerian_ff_data = DF.values.tolist()
+    arff_dict['data'] = algerian_ff_data
 
     # TODO 3: Dump it as an ARFF file
+    with open(OUTPUT_PATH, 'w') as csvfile:
+        arff.dump(arff_dict, csvfile)
+        print('Successfully converted to ARFF for Weka data mining.')
 
 
 # Press the green button in the gutter to run the script.
