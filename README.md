@@ -33,6 +33,7 @@ tree algorithm. There are **244 instances of data and 14 features/attributes**. 
     <li>Combining Regions</li>
     <li>Fix Column & Cell Formatting</li>
     <li>New Columns & Removing Rows</li>
+    <li>Converting to Weka</li>
 </ol>
 
 #### Combining Regions
@@ -77,3 +78,12 @@ This row was removed since it was only one instance and would not heavily alter 
 ![remove-null.png](imgs/remove-null.png)
 
 **Figure 8:** Removing nulls with subset classes attribute and verifying no more nulls
+
+#### Converting to Weka
+To use this newly cleaned CSV in Weka, we need to convert it to the ARFF data type. Weka only accepts this type of data for any
+type of data mining. The *liac-arff* Python package allows the dumping of a dictionary into arff format. Each row
+of the clean CSV (algerian_forest_fires.csv) is placed in the 'data' key of arff_dict before dumping as a dictionary.
+
+![arff-1.png](imgs/arff-1.png)
+
+**Figure 9:** Initial dictionary storing the CSV in ARFF format (specific fields)

@@ -80,8 +80,8 @@ def convert_to_weka():
 
     # Dump arff_dict as an arff file
     try:
-        with open(OUTPUT_PATH, 'w') as csvfile:
-            arff.dump(arff_dict, csvfile)
+        with open(OUTPUT_PATH, 'w') as arf_file:
+            arff.dump(arff_dict, arf_file)
             print('Successfully converted to ARFF for Weka data mining.')
     except Exception as e:
         print(e)
