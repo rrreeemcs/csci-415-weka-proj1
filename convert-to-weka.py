@@ -19,74 +19,62 @@ Follow the format below:
 
 import arff
 import pandas as pd
+import sys
 
-# Constants (file path to clean csv, output path for the arff file, and the dataframe after reading from clean)
-INPUT_PATH = 'data/algerian_forest_fires_clean.csv'
-OUTPUT_PATH = 'data/algerian_forest_fires.arff'
-DF = pd.read_csv(INPUT_PATH)
+import arff
+import pandas as pd
+import sys
 
-def convert_to_weka():
-    # Starting message
-    print(f"Starting convert_to_weka for algerian_forest_fires.csv...\n")
-
-    # Creating initial dictionary with description, relation name, attributes, and blank data
-    # Gets filled in during the next step
-    arff_dict = {
-        'description': 'Algerian forest fire classification data. Taken from two regions of Algeria from 06-2012 to 09-2012.',
-        'relation': 'algerian_forest_fires',
-        'attributes': [
-            ('region', ['Bejaia', 'Sidi-Bel Abbes']),
-            ('date', 'STRING'),
-            ('day', 'STRING'),
-            ('month', 'STRING'),
-            ('year', 'STRING'),
-            ('temp_c', 'REAL'),
-            ('rel_humidity_percent', 'REAL'),
-            ('wind_speed_kmh', 'REAL'),
-            ('rainfall_mm', 'REAL'),
-            ('ffmc', 'REAL'),
-            ('dmc', 'REAL'),
-            ('dc', 'REAL'),
-            ('isi', 'REAL'),
-            ('bui', 'REAL'),
-            ('fwi', 'REAL'),
-            ('classes', ['fire', 'not fire'])
-        ],
-        'data':[]
-    }
-
-    # Reading DF values with values.tolist()
-    algerian_ff_data = DF.values.tolist()
-    # Length of arff_dict['data'] before input
-    print(f"Length of ARFF Data: {len(arff_dict['data'])}")
-
-    # Loading DF data into arff_dict['data']
+def convert_to_weka(input_path, output_path):
     try:
-        arff_dict['data'] = algerian_ff_data
+        # Starting message
+        print(f"Starting conversion of data/{input_path} to .arff")
 
-        # Outputting when region is finished - starts with Bejaia
-        region_counter = 'Bejaia'
-        for row in arff_dict['data']:
-            if row[0] != region_counter:
-                print(f'{region_counter} Region Finished!')
-                region_counter = row[0]
-        # Finishes with Sidi-Bel Abbes
-        print(f'{region_counter} Region Finished!')
+        # Read the input file & show metadata
+        df = pd.read_csv(f"data/{input_path}")
+        print(f"Input: data{input_path}")
+        print(f"Length of DataFrame: {len(df)}\n")
 
-        # Showing length of arff_dict['data'] after input
-        print(f"Length of ARFF Data: {len(arff_dict['data'])}\n")
-    except Exception as e:
-        print(e)
+        # Getting some data from the user (name of dataset and small description)
+        relation_name = input("Enter the relation name: ")
+        description_text = input("Enter a description for the dataset: ")
 
-    # Dump arff_dict as an arff file
-    try:
-        with open(OUTPUT_PATH, 'w') as arf_file:
+        # Getting all the attributes from the DataFrame
+        arff_attributes = []
+        for col in df.columns:
+            # If column a numeric type (float or int) -> append as the REAL data type
+            if pd.api.types.is_numeric_dtype(df[col]):
+                arff_attributes.append((col, 'REAL'))
+            # Otherwise, get categorical values (region, date, class)
+            else:
+                unique_values = df[col].unique().astype(str).tolist()
+                arff_attributes.append((col, unique_values))
+
+        # Create dictionary from the information above
+        arff_dict = {
+            'description': description_text,
+            'relation': relation_name,
+            'attributes': arff_attributes,
+            'data': df.values.tolist()
+        }
+
+        # Create the output file
+        with open(f"data/{output_path}", 'w') as arf_file:
+            print("Converting to .arff...")
             arff.dump(arff_dict, arf_file)
-            print('Successfully converted to ARFF for Weka data mining.')
+            print(f'\nSuccessfully converted to data/{output_path} for Weka data mining.')
+            # Showing final length of data
+            print(f"Length of ARFF Data: {len(arff_dict['data'])}")
+
+    # Exception if file not found or any other exception occurs
+    except FileNotFoundError:
+        print(f"Error: The file data/{input_path} was not found.")
     except Exception as e:
-        print(e)
+        print(f"An error occurred: {e}")
 
 
 if __name__ == '__main__':
-    print("Starting to conversion of algerian_forest_fires_clean.csv to algerian_forest_fires.arff...\n")
-    convert_to_weka()
+    if len(sys.argv) != 3:
+        print("Usage: python convert-to-weka.py <in.csv> <out.arff>")
+    else:
+        convert_to_weka(sys.argv[1], sys.argv[2])
