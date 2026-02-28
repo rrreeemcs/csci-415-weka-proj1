@@ -84,7 +84,7 @@ This row was removed since it was only one instance and would not heavily alter 
 To use this newly cleaned CSV in Weka, we need to convert it to the ARFF data type. Weka only accepts this type of data for any
 type of data mining. The *liac-arff* Python package allows the dumping of a dictionary into arff format. The user is prompted
 to put in metadata for the new file (relation name and description). Each of the columns for the input dataset is assigned a data
-type that matches it in ARFF (numeric gets turned into REAL). Any categorical values are added with each of its values (EX: region {Bejaia, Sidi-Bel Abbes).
+type that matches it in ARFF (numeric gets turned into REAL). Any categorical values are added with each of its values (EX: region {Bejaia, Sidi-Bel Abbes}).
 Calling the function in the terminal requires this format: **python convert-to-weka.py in.csv out.arff.**
 
 ![convert-1.png](imgs/convert-1.png)
