@@ -32,7 +32,7 @@ def convert_to_weka(input_path, output_path):
 
         # Read the input file & show metadata
         df = pd.read_csv(f"data/{input_path}")
-        print(f"Input: data{input_path}")
+        print(f"Input: data/{input_path}")
         print(f"Length of DataFrame: {len(df)}\n")
 
         # Getting some data from the user (name of dataset and small description)
@@ -75,6 +75,6 @@ def convert_to_weka(input_path, output_path):
 
 if __name__ == '__main__':
     if len(sys.argv) != 3:
-        print("Usage: python convert-to-weka.py <in.csv> <out.arff>")
+        print("Must follow this format: python convert-to-weka.py <in.csv> <out.arff>")
     else:
         convert_to_weka(sys.argv[1], sys.argv[2])
