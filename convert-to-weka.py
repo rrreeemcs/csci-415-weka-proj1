@@ -21,72 +21,60 @@ import arff
 import pandas as pd
 import sys
 
+import arff
+import pandas as pd
+import sys
+
 def convert_to_weka(input_path, output_path):
-    # Starting message
-    print(f"Starting conversion for data/{input_path}...\n")
-
     try:
-        # Read the input file provided via command line
+        # Starting message
+        print(f"Starting conversion of data/{input_path} to .arff")
+
+        # Read the input file & show metadata
         df = pd.read_csv(f"data/{input_path}")
-    except Exception as e:
-        print(f"Error reading input file: {e}")
-        return
+        print(f"Input: data{input_path}")
+        print(f"Length of DataFrame: {len(df)}\n")
 
-    # Creating initial dictionary with the data provided
-    arff_dict = {
-        'description': 'Algerian forest fire classification data. Taken from two regions of Algeria from 06-2012 to 09-2012.',
-        'relation': 'algerian_forest_fires',
-        'attributes': [
-            ('region', ['Bejaia', 'Sidi-Bel Abbes']),
-            ('date', 'STRING'),
-            ('day', 'STRING'),
-            ('month', 'STRING'),
-            ('year', 'STRING'),
-            ('temp_c', 'REAL'),
-            ('rel_humidity_percent', 'REAL'),
-            ('wind_speed_kmh', 'REAL'),
-            ('rainfall_mm', 'REAL'),
-            ('ffmc', 'REAL'),
-            ('dmc', 'REAL'),
-            ('dc', 'REAL'),
-            ('isi', 'REAL'),
-            ('bui', 'REAL'),
-            ('fwi', 'REAL'),
-            ('classes', ['fire', 'not fire'])
-        ],
-        'data': []
-    }
+        # Getting some data from the user (name of dataset and small description)
+        relation_name = input("Enter the relation name: ")
+        description_text = input("Enter a description for the dataset: ")
 
-    # Convert dataframe to list
-    algerian_ff_data = df.values.tolist()
+        # Getting all the attributes from the DataFrame
+        arff_attributes = []
+        for col in df.columns:
+            # If column a numeric type (float or int) -> append as the REAL data type
+            if pd.api.types.is_numeric_dtype(df[col]):
+                arff_attributes.append((col, 'REAL'))
+            # Otherwise, get categorical values (region, date, class)
+            else:
+                unique_values = df[col].unique().astype(str).tolist()
+                arff_attributes.append((col, unique_values))
 
-    try:
-        arff_dict['data'] = algerian_ff_data
+        # Create dictionary from the information above
+        arff_dict = {
+            'description': description_text,
+            'relation': relation_name,
+            'attributes': arff_attributes,
+            'data': df.values.tolist()
+        }
 
-        # Region tracking for console output [cite: 121, 122]
-        region_counter = 'Bejaia'
-        for row in arff_dict['data']:
-            if row[0] != region_counter:
-                print(f'{region_counter} Region Finished!')
-                region_counter = row[0]
-        print(f'{region_counter} Region Finished!')
-        print(f"Length of ARFF Data: {len(arff_dict['data'])}\n")
-
-    except Exception as e:
-        print(f"Data processing error: {e}")
-
-    # Dump to the specified output path
-    try:
+        # Create the output file
         with open(f"data/{output_path}", 'w') as arf_file:
+            print("Converting to .arff...")
             arff.dump(arff_dict, arf_file)
-            print(f'Successfully converted to data/{output_path} for Weka data mining.')
+            print(f'\nSuccessfully converted to data/{output_path} for Weka data mining.')
+            # Showing final length of data
+            print(f"Length of ARFF Data: {len(arff_dict['data'])}")
+
+    # Exception if file not found or any other exception occurs
+    except FileNotFoundError:
+        print(f"Error: The file data/{input_path} was not found.")
     except Exception as e:
-        print(f"Error saving ARFF file: {e}")
+        print(f"An error occurred: {e}")
 
 
 if __name__ == '__main__':
-    # Check if proper arguments are passed as per project instructions
     if len(sys.argv) != 3:
-        print("Usage: python convert-to-weka.py <in.data> <out.arff>")
+        print("Usage: python convert-to-weka.py <in.csv> <out.arff>")
     else:
         convert_to_weka(sys.argv[1], sys.argv[2])
