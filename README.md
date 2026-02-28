@@ -66,11 +66,12 @@ to be floats instead of strings. The *temperature* column, for example, is now c
 **Figure 6:** Changing the column data types and names for temperature, rh, ws, and rain
 
 #### New Columns & Removing Rows
-A column that looked necessary to add was a date column. Each row contained the date split into day, month, and year already so they were
-not removed from the table. No other columns needed to be created for this dataset. Additionally, the date was moved to be the first column of the dataset.
+A column that looked necessary to add was a date column. After combining the day, month, and year together to create this new
+date column, each of these columns were promptly removed. The year 2012 was constant, further proving the deletion of the columns.
+Additionally, the date was moved to be the first column of the dataset.
 
 ![new-col.png](imgs/new-col.png)
-**Figure 7:** Creating the new date column and moving it to the front
+**Figure 7:** Creating the new date column, dropping ['day', 'month', 'year'], checking data after
 
 After this, the dataset was checked to verify there were no null values present. There only appeared to be one located in the classes attribute.
 This row was removed since it was only one instance and would not heavily alter the data.
@@ -81,9 +82,15 @@ This row was removed since it was only one instance and would not heavily alter 
 
 #### Converting to Weka
 To use this newly cleaned CSV in Weka, we need to convert it to the ARFF data type. Weka only accepts this type of data for any
-type of data mining. The *liac-arff* Python package allows the dumping of a dictionary into arff format. Each row
-of the clean CSV (algerian_forest_fires.csv) is placed in the 'data' key of arff_dict before dumping as a dictionary.
+type of data mining. The *liac-arff* Python package allows the dumping of a dictionary into arff format. The user is prompted
+to put in metadata for the new file (relation name and description). Each of the columns for the input dataset is assigned a data
+type that matches it in ARFF (numeric gets turned into REAL). Any categorical values are added with each of its values (EX: region {Bejaia, Sidi-Bel Abbes).
+Calling the function in the terminal requires this format: **python convert-to-weka.py in.csv out.arff.**
 
-![arff-1.png](imgs/arff-1.png)
+![convert-1.png](imgs/convert-1.png)
 
-**Figure 9:** Initial dictionary storing the CSV in ARFF format (specific fields)
+**Figure 9:** Creation of the dictionary to dump into ARFF format
+
+![convert-2.png](imgs/convert-2.png)
+
+**Figure 10:** Program running in terminal
